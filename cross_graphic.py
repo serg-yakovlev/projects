@@ -55,7 +55,7 @@ for i in range(30):
     wordLengthRev.append(a)
 for item in voc: # fill wordLength: wordLength[i] is list of words with length == i or longer
     tabPos = item.find("\t")
-    word = item[0:tabPos-1]
+    word = item[0:tabPos]
     description = item[tabPos:len(item)]
     vocabulary.append(word)
     vocabularyRev.append(word[::-1])
@@ -176,8 +176,8 @@ def goodStart(cell, direct): # if cell is appropriate to begin word with
 
 def maxLength(cell, direct): # maximal possible word length from "cell" in "direction"
     for i in range(25):
-        if str(array[shiftCell(cell, direct, i+1)[0]][shiftCell(cell, direct, i+1)[1]]) in "123456789":
-            return(i)
+       # if str(array[shiftCell(cell, direct, i+1)[0]][shiftCell(cell, direct, i+1)[1]]) in "123456789":
+        #    return(i)
         if sides(cell, direct, i+1)=="filled" and array[shiftCell(cell, direct, i+1)[0]][shiftCell(cell, direct, i+1)[1]]==".":
             return(i+1)
         if array[shiftCell(cell, direct, i+1)[0]][shiftCell(cell, direct, i+1)[1]]!="." and array[shiftCell(cell, direct, i+2)[0]][shiftCell(cell, direct, i+2)[1]]!=".":

@@ -1,29 +1,56 @@
-class AClass():
-    name="uasia"
-    first_name="ivanov"
+from datetime import datetime
 
-    def __init__(self, name, first_name):
-        self.name = name
-        self.first_name = first_name
 
-if __name__ == "__main__":
-    a=AClass("A","obj")
-    b=AClass("B","obj")
-    a.attr1=1
-    #print(dir(a))
-    #print(dir(b))
-    #print(a.__dict__)
-    #print(a.name)
-    #print(b.name)
-    #print(a.first_name)
-    #print(a)
-    #print(b)#
+class Person():
 
-def __str__(self):
-    return f"{self.name}"
+    def __init__(self):
+        self.__birthday=datetime.now()
+        self._name=None
 
-print(a.__dict__)
+    def set_name(self, nsme):
+        self._name=name
 
-def __setattr__(self, name, value):
-    print(name, value, "Set value")
-    super().__settatr__(name, value)
+    def get_name(self):
+        return self._name
+
+    def get_birthday(self):
+        return self.__birthday
+
+
+class Human(Person):
+
+    def __init__(self, name):
+        super().__init__()
+        self._name=name
+
+
+class Man(Human):
+    __sex = "M"
+
+    def get_sex(self):
+        return self.__sex
+
+
+class Woman(Human):
+    __sex = "F"
+
+    def get_sex(self):
+        return self.__sex
+
+    @classmethod
+    def test(cls, arg):
+        print(arg)
+
+
+if __name__=='__main__':
+    vasya = Man("Vasya")
+    masha = Woman("Masha")
+
+    print(masha.get_sex())
+    print(vasya.get_sex())
+
+    print(masha.get_name())
+    print(vasya.get_birthday())
+
+    Woman.test(56)
+    

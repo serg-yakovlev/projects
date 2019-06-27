@@ -23,7 +23,7 @@ hL = []
 fullLettSet = "-АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 goodLettSet = "АБВГДЕИКЛМНОПРСТ"
 #vocPath = input("Path to vocabulary file")
-vocPath = "/home/sergey/Документы/projects/_vocabulary.txt"
+vocPath = "C:\Python34\_vocabulary.txt"
 
 #root = Tk()
 #root.title("Crossword")
@@ -40,7 +40,7 @@ for j in range(2,80):
     row=[j]
     for i in range(1,80):
         row.append(".")
-    array.append(row)
+    array.append(row) 
 
 # read vocabulary file
 with open(vocPath) as file:
@@ -55,42 +55,42 @@ for i in range(30):
     wordLengthRev.append(a)
 for item in voc: # fill wordLength: wordLength[i] is list of words with length == i or longer
     tabPos = item.find("\t")
-    word = item[0:tabPos-1]
+    word = item[0:tabPos]
     description = item[tabPos:len(item)]
     vocabulary.append(word)
     vocabularyRev.append(word[::-1])
     descriptions.append(description)
     for i in range(1, len(word)+1):
-        wordLength[i].append(word)
+        wordLength[i].append(word) 
         wordLengthRev[i].append(word[::-1])
 
 # words - create empty array
 for i in range(30):
     a=[]
     for j in range(len(fullLettSet)):
-        a.append([])
+        a.append([]) 
     words.append(a)
 for i in range(14400): # fill words: words[a][b] is list of words with letter on "a"-position equal fullLettSet[b]
     for j in range(0,len(vocabulary[i])):
         if vocabulary[i][j] in fullLettSet:
-            words[j][fullLettSet.find(vocabulary[i][j])].append(vocabulary[i])
+            words[j][fullLettSet.find(vocabulary[i][j])].append(vocabulary[i]) 
 
 # same for wordsRev
 for i in range(30):
     a=[]
     for j in range(len(fullLettSet)):
-        a.append([])
+        a.append([]) 
     wordsRev.append(a)
 for i in range(14400):
     for j in range(0,len(vocabulary[i])):
         if vocabulary[i][::-1][j] in fullLettSet:
             wordsRev[j][fullLettSet.find(vocabulary[i][::-1][j])].append(vocabulary[i][::-1])
 
-# alphabetic numeration for descriptions list
+# alphabetic numeration for descriptions list            
 for i in range(10):
     for j in range(10):
         abcNum100.append("abcdefgijk"[i]+"abcdefgijk"[j])
-
+        
 def alphabeticNr(nr):
     return(abcNum100[nr])
 
@@ -111,7 +111,7 @@ def goodWords(crossNumbers,crossLetters): # list of words with appropriate cross
     for i in range(len(crossNumbers)):
             gWcut = list(set(gW) - set(wordLength[crossNumbers[i]])) # cut words longer then "crossNumbers[i]"
             gWnew = list(set(words[crossNumbers[i]][fullLettSet.find(crossLetters[i])]) & set(gW)) # get words with appropriate "crossNumbers[i]"
-            gW = list(set(gWcut) | set(gWnew))
+            gW = list(set(gWcut) | set(gWnew))             
     return(gW)
 
 def goodWordsRev(crossNumbers,crossLetters): # same for reversed words
@@ -121,7 +121,7 @@ def goodWordsRev(crossNumbers,crossLetters): # same for reversed words
     for i in range(len(crossNumbers)):
             gWcut = list(set(gW) - set(wordLengthRev[crossNumbers[i]]))
             gWnew = list(set(wordsRev[crossNumbers[i]][fullLettSet.find(crossLetters[i])]) & set(gW))
-            gW = list(set(gWcut) | set(gWnew))
+            gW = list(set(gWcut) | set(gWnew))             
     return(gW)
 
 def sides(cell, direct, stepsNr): # check if there are filled cells touching specified area
@@ -172,7 +172,7 @@ def goodStart(cell, direct): # if cell is appropriate to begin word with
     if array[cell[0]][cell[1]]==".":
         return(goodStartFromEmptyCell(cell, direct))
     else:
-        return(goodStartFromFilledCell(cell, direct))
+        return(goodStartFromFilledCell(cell, direct))        
 
 def maxLength(cell, direct): # maximal possible word length from "cell" in "direction"
     for i in range(25):
@@ -182,8 +182,8 @@ def maxLength(cell, direct): # maximal possible word length from "cell" in "dire
             return(i+1)
         if array[shiftCell(cell, direct, i+1)[0]][shiftCell(cell, direct, i+1)[1]]!="." and array[shiftCell(cell, direct, i+2)[0]][shiftCell(cell, direct, i+2)[1]]!=".":
             return(i+1)
-    return(25)
-
+    return(25)    
+            
 def crossings(cell, direct,lengthMax): # returns list of crossing positions numbers and corresponding list of letters (counting from current cell)
     crossPositions=[]
     crossLetters=[]
@@ -215,7 +215,7 @@ def findWord(cell, direct, lengthMin, lengthMax, goodLettSet):
     else:
         new_dict = goodWords(crossings(cell, direct, lengthMax)[0],crossings(cell, direct, lengthMax)[1])
 
-    new_dict = list(set(new_dict)&set(wordLength[lengthMin])-set(wordLength[lengthMax+1]))
+    new_dict = list(set(new_dict)&set(wordLength[lengthMin])-set(wordLength[lengthMax+1]))    
     new_dict = sample(new_dict, len(new_dict))
     for word in new_dict:
         if (len(word) in  crossings(cell, direct, lengthMax)[0])!=True or crossings(cell, direct, lengthMax)[0]==[]:
@@ -234,7 +234,7 @@ def findWordRev(cell, direct, lengthMin, lengthMax, goodLettSet):
     else:
         new_dict = goodWordsRev(crossings(cell, direct, lengthMax)[0],crossings(cell, direct, lengthMax)[1])
 
-    new_dict = list(set(new_dict)&set(wordLengthRev[lengthMin])-set(wordLengthRev[lengthMax+1]))
+    new_dict = list(set(new_dict)&set(wordLengthRev[lengthMin])-set(wordLengthRev[lengthMax+1]))         
     new_dict = sample(new_dict, len(new_dict))
     for word in new_dict:
         if (len(word) in  crossings(cell, direct, lengthMax)[0])!=True or crossings(cell, direct, lengthMax)[0]==[]:
@@ -277,11 +277,11 @@ def printWord(cell, direct, lenMin, lenMax, goodLettSet): # update array with wo
         if direct in ("south", "north"):
             directions.append("ver")
         else:
-            directions.append("hor")
+            directions.append("hor")            
         return(word)
     else:
         return("no match")
-
+            
 def printWordWithShift(cell, direct, lenMin, lenMax, goodLettSet, shiftN): # if word not found shift back by one cell and try again (maxLength grows by 1, "shiftN" - iterations limit)
     word = printWord(cell, direct, max(firstCrossing(cell, direct)+1,lenMin),maxLength(cell,direct)+1,[])
     newCell=cell
@@ -323,7 +323,7 @@ def fillAreaHoriz(cell, direct, rows):
             cell = shiftCell(cell, "south", 1)
             i+=1
         word = printWordWithShift(cell, direct, firstCrossing(cell, direct)+1,20,[],2)
-
+        
 def fillAreaVert(cell, height):
     i=0
     startRow = cell[0]
@@ -339,7 +339,7 @@ def fillAreaVert(cell, height):
 
 def fillCenterColumns(cell, height):
     word = printWord(cell, "south", 15,min(height, 20),[])
-    restHeight = height - len(word)
+    restHeight = height - len(word) 
     cell = shiftCell(cell, "south", height)
     word = printWord(cell, "north", restHeight,min(restHeight, 20),[])
 
@@ -347,8 +347,8 @@ def leftWing(iniRow, iniCol):
     cell=[iniRow,iniCol]
     word = printWord(cell,'east',15,17,[])
     lenPrev = len(word)
-    cell = shiftCell(cell, "south", 3)
-
+    cell = shiftCell(cell, "south", 3)  
+    
     for i in range(10):
         iniCell=cell
         word = printWord(cell,'east',15,17,[])
@@ -360,7 +360,7 @@ def leftWing(iniRow, iniCol):
         while word=="no match":
             cell = shiftCell(cell,"east",1)
             word = printWord(cell,"south",5,6,gLett)
-
+ 
         cell = shiftCell(cellEnd, "north", 4)
         word = printWord(cell,"south",5,6,gLett)
         while word=="no match":
@@ -372,8 +372,8 @@ def rightWing(iniRow, iniCol):
     cell=[iniRow,iniCol]
     word = printWord(cell,'west',15,17,[])
     lenPrev = len(word)
-    cell = shiftCell(cell, "south", 3)
-
+    cell = shiftCell(cell, "south", 3) 
+    
     for i in range(10):
         iniCell=cell
         word = printWord(cell,'west',15,17,[])
@@ -390,7 +390,7 @@ def rightWing(iniRow, iniCol):
         while word=="no match":
             cell = shiftCell(cell,"east",1)
             word = printWord(cell,"south",5,6,gLett)
-
+      
         cell = shiftCell(iniCell,'south',3)
 
 def printShortDescr():
@@ -416,11 +416,11 @@ def printShortDescr():
             print(str(i)+"  "+item[22:])
             i+=1
         else:
-            vert = i+1
+            vert = i
             break
     i=1
     print("\nПо вертикали:\n")
-    for item in dString[vert:]:
+    for item in dString[vert-1:]:
             print(str(i)+"  "+item[22:])
             i+=1
 
@@ -441,7 +441,7 @@ def printShortDescr():
     #label = Label(text=descrList2, bd="0", justify=LEFT, font="Arial 8", width=40,background="#fff")#893f45 9B5150 pady="0", padx="0",
     #label.grid(row=0, column = 97, columnspan=45,rowspan=70)
 
-def printArray(firstRow, lastRow):
+def printArray(firstRow, lastRow):    
   #  for j in range(secRow+1):
   #      for i in range(0, secRow+1):
   #          if i<firstRow or j<firstRow:
@@ -452,7 +452,7 @@ def printArray(firstRow, lastRow):
   #              fnt="Arial 11 bold"
   #              bckgr="white" #113f45"
   #              frgr="#555" #fff"
-
+                
            # if array[j][i]!= ".":
            #     label = Label(text=array[j][i], justify=CENTER, bd="0", font=fnt, width=2, background=bckgr, foreground=frgr) #893f45 9B5150 pady="0", padx="0",
            #     label.grid(row=j, column=i)
@@ -475,7 +475,7 @@ def printArray(firstRow, lastRow):
             strOutput=strOutput+str(symb)
         print(strOutput)#+"\n")
 
-
+        
 def clickWordButton():
     pass
 
@@ -493,7 +493,7 @@ def clickGetFullDescr():
 
 def descrByNr(nr):
 	return(["По горизонтали: " + dString[int(nr)-1][23::], "По вертикали: " + dString[int(nr)+hL[0]-2][23::]])
-
+    
 def main(iniRow=4, iniCol=4):
     leftWing(iniRow, iniCol)
     rightWing(iniRow, iniCol+40)
@@ -516,7 +516,7 @@ def main(iniRow=4, iniCol=4):
     fillAreaHoriz([iniRow, iniCol+18], "west", 30)
     fillAreaHoriz([iniRow, iniCol+22], "east", 30)
     fillAreaVert([iniRow-1, iniCol+13], 33)
-    fillAreaVert([iniRow-1, iniCol+14], 33)
+    fillAreaVert([iniRow-1, iniCol+14], 33)    
     fillAreaVert([iniRow-1, iniCol+15], 33)
     fillAreaVert([iniRow-1, iniCol+16], 33)
     fillAreaVert([iniRow-1, iniCol+24], 33)
