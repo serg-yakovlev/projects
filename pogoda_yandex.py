@@ -90,19 +90,19 @@ class Weather():
         part=['morning','day','evening','night']
         head=['утро','день','вечер','ночь']
         print('\t\tПрогноз:')
-        for i in range(4):
-            print('\n\t\t',head[i])
-            print(self.get_condition(self.parsed_string['forecasts'][0]['parts'][part[i]]['condition']))
+        for p, h in zip(part, head):
+            print('\n\t\t',h)
+            print(self.get_condition(self.parsed_string['forecasts'][0]['parts'][p]['condition']))
             #print(self.parsed_string['forecasts'][0]['parts'])
-            print('Температура воздуха', self.parsed_string['forecasts'][0]['parts'][part[i]]['temp_avg'], '*C')
-            print('Ощущается как', self.parsed_string['forecasts'][0]['parts'][part[i]]['feels_like'], '*C')
+            print('Температура воздуха', self.parsed_string['forecasts'][0]['parts'][p]['temp_avg'], '*C')
+            print('Ощущается как', self.parsed_string['forecasts'][0]['parts'][p]['feels_like'], '*C')
             try:
-                print('Температура воды',    self.parsed_string['forecasts'][0]['parts'][part[i]]['temp_water'])
+                print('Температура воды',    self.parsed_string['forecasts'][0]['parts'][p]['temp_water'])
             except:
                 pass
-            print('Ветер', str(self.get_wind_direct(self.parsed_string['forecasts'][0]['parts'][part[i]]['wind_dir']))+', скорость', self.parsed_string['forecasts'][0]['parts'][part[i]]['wind_speed'],'м/с, порывы до', self.parsed_string['forecasts'][0]['parts'][part[i]]['wind_gust'],'м/с')
-            print('Атмосферное давление', self.parsed_string['forecasts'][0]['parts'][part[i]]['pressure_mm'], 'мм. рт. ст.')
-            print('Относительная влажность', str(self.parsed_string['forecasts'][0]['parts'][part[i]]['humidity'])+'%')
+            print('Ветер', str(self.get_wind_direct(self.parsed_string['forecasts'][0]['parts'][p]['wind_dir']))+', скорость', self.parsed_string['forecasts'][0]['parts'][p]['wind_speed'],'м/с, порывы до', self.parsed_string['forecasts'][0]['parts'][p]['wind_gust'],'м/с')
+            print('Атмосферное давление', self.parsed_string['forecasts'][0]['parts'][p]['pressure_mm'], 'мм. рт. ст.')
+            print('Относительная влажность', str(self.parsed_string['forecasts'][0]['parts'][p]['humidity'])+'%')
        
 
 
