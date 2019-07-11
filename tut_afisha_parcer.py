@@ -24,17 +24,25 @@ class TutBy():
     def get_items(self):
         self.extract=self.html.find_all('div', {'class':'film-name'})
 
+    def double_iterate_items(self):
+        print(type(self.extract))
+        i=0
+        for item in self.extract:
+            while i<10:            
+                print('\n###'+str(i), type(item),'###\t')
+                i+=1
+                j=0
+                for tag in item:
+                    #if tag!=None:
+                    print("\t###"+str(j), type(tag),'###\t', tag, '\n')
+                    j+=1
+
     def iterate_items(self):
         i=0
         for item in self.extract:
-            print(i)
+            print("\t###"+str(i)+'###\t', tag_1, '\n')
             i+=1
-            j=0
-            for tag_1 in item:
-                if tag_1!=None:
-                    print("\t", j, "-"+str(tag_1)+"-")
-                    j+=1
-
+            
     def parce_result(self):
         prev_place="" #предыдущий кинотеатр
 
@@ -119,7 +127,8 @@ if __name__=='__main__':
     a=TutBy()
     a.get_html()
     a.get_items()
-    a.parce_result()
+    #a.parce_result()
     #print(a.items)
     #a.iterate_items()
+    a.double_iterate_items()
     #print(a.extract)
