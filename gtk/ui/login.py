@@ -20,13 +20,13 @@ class LoginWindow(Gtk.Window):
         password_box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL)
         label_login = Gtk.Label(label = "Login")
         self.login = Gtk.Entry()
-        self.login.connect("change", self.on_change_login)
+        self.login.connect("changed", self.on_change_login)
         login_box.pack_start(label_login,True,True,0)
         login_box.pack_start(self.login, expand = False, fill = False, padding = 5)
         top_box.pack_start(login_box, expand = False, fill = False, padding = 5)
         label_password = Gtk.Label(label = "Password")
         self.password = Gtk.Entry()
-        self.login.connect("change", self.on_change_password)
+        self.password.connect("changed", self.on_change_password)
         password_box.pack_start(label_password,True,True,0)
         password_box.pack_start(self.password, expand = False, fill = False, padding = 5)
         top_box.pack_start(password_box, expand = False, fill = False, padding = 5)
@@ -72,7 +72,7 @@ class LoginWindow(Gtk.Window):
         self.sign_in = Gtk.Button(label="Sign In")
         self.sign_in.connect("clicked", self.on_sign_in)
         self.sign_in.set_sensitive(False)
-        c_box.pack_start(sign_in, True, True, 0)
+        c_box.pack_start(self.sign_in, True, True, 0)
 
         bottom_box.pack_start(c_box, True, True,0)
         
@@ -86,17 +86,12 @@ class LoginWindow(Gtk.Window):
         pass
 
 
-    def __check_entry(self, entry, flag):
-        if len(entry.get_text())>2:
-            flag = True
-        else:
-            flag = False
+    def __check_entry(self):
 
-        if self.is_login and self.is_password:
+        if len(self.login.get_text())>2 and len(self.password.get_text())>2:
             self.sign_in.set_sensitive(True)
         else:
-            self.sign_in.set_sensitive(false)
-
+            self.sign_in.set_sensitive(False)
 
 
     def on_sign_in(self, button):
@@ -104,11 +99,12 @@ class LoginWindow(Gtk.Window):
 
 
     def on_change_login(self, entry):
-        self.__check_entry(entry, self.is_login)
+        self.__check_entry()
 
 
     def on_change_password(self, entry):
-        self.__check_entry(entry, self.is_password)
+        self.__check_entry()
+
 
 
 
