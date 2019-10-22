@@ -1,12 +1,16 @@
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+import redis
+import event
 
 
 class LoginWindow(Gtk.Window):
     
     def __init__(self):
         super().__init__(title="Mega Chat | Login")
+        event.Event(name="login")
+
         self.is_login = False
         self.is_password = False
         self.set_border_width(50)
@@ -85,17 +89,18 @@ class LoginWindow(Gtk.Window):
     def on_registration(self, button):
         pass
 
-
     def __check_entry(self):
+        self.sign_in.set_sensitive(len(self.login.get_text())>2 and len(self.password.get_text())>2)
 
-        if len(self.login.get_text())>2 and len(self.password.get_text())>2:
-            self.sign_in.set_sensitive(True)
-        else:
-            self.sign_in.set_sensitive(False)
-
-
+    @event.Event.origin("login", post = True)
     def on_sign_in(self, button):
-        pass
+        storage = redis.StrictRedis()
+        storage.set("login", self.login.get_text())
+        storage.set("password", self.password.get_text())
+        storage.expire("login", 10)
+        storage.expire("password", 10)
+        # login = self.login.get_text()
+        # password = self.password.get_text()
 
 
     def on_change_login(self, entry):
