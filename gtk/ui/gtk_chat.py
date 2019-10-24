@@ -26,24 +26,31 @@ class ChatWindow(Gtk.Window):
         self.set_size_request(800, 600)
 
         master_box = Gtk.Box()
+        master_box.set_spacing(5)
         self.add(master_box)
 
-        left_box = Gtk.Box(Gtk.Orientation.VERTICAL)
+        left_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         left_box.set_size_request(200, -1)
         master_box.pack_start(left_box, False, True, 0)
+        separator = Gtk.VSeparator()
+        master_box.pack_start(separator, False, False, 0)
 
-        center_box = Gtk.Box(Gtk.Orientation.VERTICAL)
-        center_box.set_size_request(200, -1)
-        master_box.pack_start(center_box, False, True, 0)
+        center_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        master_box.pack_start(center_box, True, True, 0)
+        separator = Gtk.VSeparator()
+        master_box.pack_start(separator, False, False, 0)
 
-        right_box = Gtk.Box(Gtk.Orientation.VERTICAL)
+        right_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         right_box.set_size_request(200, -1)
         master_box.pack_start(right_box, False, True, 0)
 
         pict = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-        filename="avatar.jpg", 
-        width=50, 
-        height=50, 
+        filename=os.path.join(
+                 os.path.dirname(os.path.abspath(__file__)),
+                 "avatar.jpg"
+                 ), 
+        width=150, 
+        height=150, 
         preserve_aspect_ratio=True)
 
         avatar = Gtk.Image.new_from_pixbuf(pict)
@@ -57,16 +64,89 @@ class ChatWindow(Gtk.Window):
         #     )
         # avatar.set_size_request(50,50)
 
-        left_box.pack_start(avatar, False, True, 5)        
+        left_box.pack_start(avatar, False, True, 5)
+        separator = Gtk.HSeparator()
+        left_box.pack_start(separator, False, True, 5)
 
         user_label = Gtk.Label(label = "User name")
-        left_box.pack_start(user_label, True, False,0)
+        left_box.pack_start(user_label, False, True, 0)
+        separator = Gtk.HSeparator()
+        left_box.pack_start(separator, False, True, 5)
+
+        l_space = Gtk.Alignment()
+        left_box.pack_start(l_space, True, True, 5)
+
+        separator = Gtk.HSeparator()
+        left_box.pack_start(separator, False, True, 5)
+
+        b_box = Gtk.ButtonBox()
+        b_box.set_spacing(5)
+        left_box.pack_start(b_box, False, False, 5)
+
+        separator = Gtk.HSeparator()
+        left_box.pack_start(separator, False, False, 5)
+
+        close_button = Gtk.Button(label="Close")
+        close_button.connect("clicked", Gtk.main_quit)
+        b_box.pack_start(close_button, True, True, 5)
+
+        scroll_box = Gtk.ScrolledWindow()
+        scroll_box.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        center_box.pack_start(scroll_box, True, True, 5)
+
+        chat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        scroll_box.add(chat_box)
+        separator = Gtk.HSeparator()
+        center_box.pack_start(separator, False, False, 5)
+
+
+        input_message = Gtk.Frame()
+        chat_box.pack_start(input_message, False, True,  5)
+
+        pict = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+        filename=os.path.join(
+                 os.path.dirname(os.path.abspath(__file__)),
+                 "avatar.jpg"
+                 ), 
+        width=50, 
+        height=50, 
+        preserve_aspect_ratio=True)
+
+        input_avatar = Gtk.Image.new_from_pixbuf(pict)
+        
+        message_box = Gtk.Box()
+        message_box.pack_start(input_avatar, False, True,  5)
+
+        input_message.add(message_box)
+        message_box.pack_start(Gtk.Label(
+            label="Недавно мне стало интересно, насколько хорошо Python, \n\
+            на котором, ... Блог о программировании, операционных системах, \n\
+            СУБД, девайсах, сетях, ... Пишем GUI-приложение при помощи Python, \n\
+            GTK и Glade .... Так как XML является текстовым форматом, его очень \n\
+            здорово хранить в Git."),  True, False,  5
+        )
+
+
+        output_message = Gtk.Frame()        
+
+        send_box = Gtk.Box()
+        send_box.set_spacing(5)
+        center_box.pack_start(send_box, False, True,  5)
+
+        separator = Gtk.HSeparator()
+        center_box.pack_start(separator, False, False, 5)
+
+        smile_button = Gtk.Button(label = ":-)")
+        send_box.pack_start(smile_button, False, False, 0)
 
         message_entry = Gtk.Entry()
-        center_box.pack_start(message_entry, True, False, 0)
+        send_box.pack_start(message_entry, True, True, 0)
+
+        send_button = Gtk.Button(label = "send")
+        send_box.pack_start(send_button, False, False, 0)
 
         favorite_label = Gtk.Label(label = "Favorites")
-        right_box.pack_start(favorite_label, True, False,0)
+        right_box.pack_start(favorite_label, False, False, 0)
 
         self.show_all()
 
