@@ -47,10 +47,10 @@ class ChatWindow(Gtk.Window):
         pict = GdkPixbuf.Pixbuf.new_from_file_at_scale(
         filename=os.path.join(
                  os.path.dirname(os.path.abspath(__file__)),
-                 "avatar.jpg"
-                 ), 
-        width=150, 
-        height=150, 
+                 "Avatar.png"
+                 ),
+        width=150,
+        height=150,
         preserve_aspect_ratio=True)
 
         avatar = Gtk.Image.new_from_pixbuf(pict)
@@ -94,40 +94,42 @@ class ChatWindow(Gtk.Window):
         scroll_box.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         center_box.pack_start(scroll_box, True, True, 5)
 
-        chat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        scroll_box.add(chat_box)
+        self.chat_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        scroll_box.add(self.chat_box)
         separator = Gtk.HSeparator()
         center_box.pack_start(separator, False, False, 5)
 
 
-        input_message = Gtk.Frame()
-        chat_box.pack_start(input_message, False, True,  5)
 
-        pict = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-        filename=os.path.join(
-                 os.path.dirname(os.path.abspath(__file__)),
-                 "avatar.jpg"
-                 ), 
-        width=50, 
-        height=50, 
-        preserve_aspect_ratio=True)
 
-        input_avatar = Gtk.Image.new_from_pixbuf(pict)
+        # input_avatar = Gtk.Image.new_from_pixbuf(pict)
         
-        message_box = Gtk.Box()
-        message_box.pack_start(input_avatar, False, True,  5)
+        # message_box = Gtk.Box()
+        # message_box.pack_start(input_avatar, False, True,  5)
 
-        input_message.add(message_box)
-        message_box.pack_start(Gtk.Label(
-            label="Недавно мне стало интересно, насколько хорошо Python, \n\
-            на котором, ... Блог о программировании, операционных системах, \n\
-            СУБД, девайсах, сетях, ... Пишем GUI-приложение при помощи Python, \n\
-            GTK и Glade .... Так как XML является текстовым форматом, его очень \n\
-            здорово хранить в Git."),  True, False,  5
-        )
+        # input_message.add(message_box)
+
+        # text_label = Gtk.Label()
+        # text_label.set_markup(
+        #     "<b>Недавно мне стало</b> интересно, насколько хорошо "
+        #     "Python, на котором,  Блог о программировании, операционных "
+        #     "системах, СУБД, девайсах, сетях,  Пишем GUI-приложение при "
+        #     "помощи Python,  GTK и Glade Так как XML является текстовым "
+        #     "форматом, его очень "
+        #     "здорово хранить в Git. <a href='google.com'>Google</a>"
+        #     #"<img src='avatar.jpg'/>"
+        #     )
+        # text_label.set_justify(Gtk.Justification.LEFT)
+        # text_label.set_selectable(True)
+        # text_label.set_line_wrap(True)
 
 
-        output_message = Gtk.Frame()        
+        # message_box.pack_start(text_label, True, False,  5
+        # )
+
+
+
+        output_message = Gtk.Frame()
 
         send_box = Gtk.Box()
         send_box.set_spacing(5)
@@ -149,6 +151,74 @@ class ChatWindow(Gtk.Window):
         right_box.pack_start(favorite_label, False, False, 0)
 
         self.show_all()
+
+        test_input = {
+        "message": ("Этот модуль считается устаревшим. "
+            "Он будет по-прежнему поддерживаться и сохранять стабильность "
+            "API/ABI на всём протяжении серии GNOME 2.x, но мы не советуем "
+            "использовать его в новых приложениях, если только вам "
+            "не требуются возможности, которые ещё не перенесены "
+            "в другие модули."
+            ),
+        "user": "vasia"
+        }
+
+        test_output = {
+        "message": ("Указатель на пиксельные данные pixbuf. "
+            "Пожалуйста, смотрите раздел о данных изображения для "
+            "получения информации о том, как данные пикселей "
+            "хранятся в памяти.Эта функция будет вызывать неявную "
+            "копию данных pixbuf, если pixbuf был создан из "
+            "данных только для чтения. "
+            ),
+        "user": "User"
+        }
+
+        self.__add_message_box(test_input)
+        self.__add_message_box(test_output, False)
+
+    def __add_message_box(self, data, input=True):
+
+        input_message = Gtk.Frame()
+        self.chat_box.pack_start(input_message, False, True,  5)
+
+        pict = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+        filename=os.path.join(
+                 os.path.dirname(os.path.abspath(__file__)
+                ),
+                 f".contacts/{data['user']}.png" if input else "Avatar.png"
+                ), 
+        width=50, 
+        height=50, 
+        preserve_aspect_ratio=True)
+        avatar = Gtk.Image.new_from_pixbuf(pict)
+        
+        message_box = Gtk.Box()
+        message_box.pack_end(avatar, False, True,  5)
+
+        input_message.add(message_box)
+
+        text_label = Gtk.Label()
+        #text_label.set_markup(
+        #    "<b>Недавно мне стало</b> интересно, насколько хорошо "
+        #    "Python, на котором,  Блог о программировании, операционных "
+        #    "системах, СУБД, девайсах, сетях,  Пишем GUI-приложение при "
+        #    "помощи Python,  GTK и Glade Так как XML является текстовым "
+        #    "форматом, его очень "
+        ##    "здорово хранить в Git. <a href='google.com'>Google</a>"
+        #    #"<img src='avatar.jpg'/>"
+        #    )
+        text_label.set_markup(data['message'])
+        text_label.set_selectable(True)
+        text_label.set_line_wrap(True)
+
+        if not input:
+            text_label.set_justify(Gtk.Justification.RIGHT)
+            message_box.pack_end(text_label, True, False,  5)
+        else:
+            message_box.pack_start(text_label, True, False,  5)
+
+        self.chat_box.pack_start(message_box, False, True,  5)
 
 
     def regy_date():
